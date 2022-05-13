@@ -1,0 +1,51 @@
+.visualizer {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-flow: column;
+}
+
+.controls {
+    color: red;
+    display: flex;
+    flex-flow: row no-wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.stats {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    color: white;
+    display: flex;
+    flex-flow: row;
+}
+
+.stat-item {
+    margin: 0 10px;
+    padding: 0;
+}
+
+.array-container {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+}
+
+.array-value {
+    background-color: white;
+    flex: 1;
+}
+
+.array-bar {
+    margin-top: auto;
+    margin-right: 1px;
+}
+
+.array-dot {
+    margin-right: 1px;
+}
