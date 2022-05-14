@@ -34,6 +34,7 @@ export default class SortingVisualizer extends React.Component {
             merge: algo.MergeSort,
             mergeInPlace: algo.MergeSortInPlace,
             quickHoare: algo.QuickSortHoare,
+            quickIter: algo.QuickSortIterative,
             count: algo.CountSort,
             radixLSD: algo.RadixSortLSD,
         }
@@ -104,9 +105,9 @@ export default class SortingVisualizer extends React.Component {
 
     playNote(note) {
         const {audioContext, size} = this.state;
-        Soundfont.instrument(audioContext, "electric_grand_piano", { gain: 2, attack: 0, decay: 0.1, sustain: 0.1, release: 0.1 }).then((piano) => {
-            piano.play(range(note, 0, size, 24, 107), audioContext.currentTime, { duration: 0.1 });
-        });
+        // Soundfont.instrument(audioContext, "electric_grand_piano", { gain: 2, attack: 0, decay: 0.1, sustain: 0.1, release: 0.1 }).then((piano) => {
+        //     piano.play(range(note, 0, size, 24, 107), audioContext.currentTime, { duration: 0.1 });
+        // });
     }
     
     setColor(index, color) {
@@ -246,6 +247,7 @@ export default class SortingVisualizer extends React.Component {
                         <option value="merge">Merge Sort</option>
                         <option value="mergeInPlace">In-Place Merge Sort</option>
                         <option value="quickHoare">Quick Sort Hoare</option>
+                        <option value="quickIter">Iterative Quick Sort</option>
                         <option value="count">Count Sort</option>
                         <option value="radixLSD">Radix Sort LSD</option>
                     </select>

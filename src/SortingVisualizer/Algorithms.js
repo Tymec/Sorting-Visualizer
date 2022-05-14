@@ -134,13 +134,12 @@ export const InsertionSort = async (p) => {
 
             p.setColor(j, '#ff0000');
             p.setColor(j + 1, '#ff0000');
-
-            array[j + 1] = array[j];
-            j = j - 1;
-
             await sleep(delay, signal);
-            p.resetColor(j);
+            array[j + 1] = array[j];
+            j--;
+
             p.resetColor(j + 1);
+            p.resetColor(j + 2);
         }
         p.stats.access++;
         array[j + 1] = key;
@@ -318,6 +317,76 @@ export const QuickSortHoare = async (p, lo=undefined, hi=undefined) => {
 
         await QuickSortHoare(p, lo, j);
         await QuickSortHoare(p, j + 1, hi);
+    }
+}
+
+export const QuickSortIterative = async (p) => {
+    const {array, delay, signal} = p;
+
+    const MAX_DEPTH = 1000;
+
+    let pivot;
+    let beg = [], end = [];
+    let i = 0, L, R;
+
+    beg[0] = 0; end[0] = array.length;
+    
+    while (i >= 0) {
+        p.stats.access += 2;
+        L = beg[i]; 
+        R = end[i] - 1;
+
+        if (L < R) {
+            p.stats.access++;
+            pivot = array[L];
+            
+            if ( i === MAX_DEPTH - 1 ) return;
+            
+            while (L < R) {
+                p.stats.access++;
+                while (array[R] >= pivot && L < R) {
+                    p.stats.comparison++;
+                    p.stats.access++;
+                    R--;
+                }
+                if (L < R) {
+                    p.stats.access += 2;
+                    p.setColor(L + 1, '#ff0000');
+                    p.setColor(R, '#ff0000');
+                    await sleep(delay, signal);
+                    array[L++] = array[R];
+                    p.resetColor(L);
+                    p.resetColor(R);
+                }
+
+                while (array[L] <= pivot && L < R) {
+                    p.stats.comparison++;
+                    p.stats.access++;
+                    L++; 
+                }
+                    
+                if (L < R) {
+                    p.stats.access += 2;
+                    p.setColor(R - 1, '#ff0000');
+                    p.setColor(L, '#ff0000');
+                    await sleep(delay, signal);
+                    array[R--] = array[L]; 
+                    p.resetColor(R);
+                    p.resetColor(L);
+                }
+            }
+
+            p.stats.access++;
+
+            array[L] = pivot; 
+            beg[i + 1] = L + 1; 
+            end[i + 1] = end[i]; 
+            end[i++] = L;
+        } else {
+            i--; 
+        }
+
+        p.update();
     }
 }
 
