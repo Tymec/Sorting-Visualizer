@@ -22,6 +22,10 @@ export const sleep = async (ms, abortSignal) => {
     });
 }
 
+export const range = (value, min1, max1, min2, max2) => {
+    return (value - min1) * (max2 - min2) / (max1 - min1) + min2;
+}
+
 export const swap = (array, i, j) => {
     let temp = array[i];
     array[i] = array[j];

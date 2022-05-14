@@ -173,6 +173,7 @@ export const MergeSort = async (p, lo=undefined, hi=undefined) => {
         let k = lo;
 
         for (let v = 0; v < n1 && v < n2; v++) {
+            p.playNote(lo + v);
             p.setColor(lo + v, '#ff0000');
             p.setColor(mid + 1 + v, '#ff0000');
             await sleep(delay, signal);

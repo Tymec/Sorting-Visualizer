@@ -1,8 +1,9 @@
 import React from 'react';
+import Soundfont from "soundfont-player";
 import './SortingVisualizer.css';
 import './Algorithms';
 import * as algo from './Algorithms';
-import { sleep } from './Utils.js';
+import { sleep, range } from './Utils.js';
 
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
@@ -16,6 +17,7 @@ export default class SortingVisualizer extends React.Component {
             type: 'bar',
             isRunning: false,
             isSorted: true,
+            audioContext: undefined,
             abortCtrl: undefined,
             stats: {
                 comparisons: 0,
@@ -38,7 +40,7 @@ export default class SortingVisualizer extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({abortCtrl: new AbortController()});
+        this.setState({abortCtrl: new AbortController(), audioContext: new AudioContext()});
         this.initArray(this.state.size);
     }
 
@@ -100,6 +102,13 @@ export default class SortingVisualizer extends React.Component {
         return stats;
     }
 
+    playNote(note) {
+        const {audioContext, size} = this.state;
+        Soundfont.instrument(audioContext, "electric_grand_piano", { gain: 2, attack: 0, decay: 0.1, sustain: 0.1, release: 0.1 }).then((piano) => {
+            piano.play(range(note, 0, size, 24, 107), audioContext.currentTime, { duration: 0.1 });
+        });
+    }
+    
     setColor(index, color) {
         const {colors} = this.state;
         colors[index] = color;
@@ -129,6 +138,7 @@ export default class SortingVisualizer extends React.Component {
         for (let i = 0; i < colors.length; i++) {
             colors[i] = '#00ff00';
             this.setState({colors});
+            this.playNote(i);
             await sleep(this.state.delay, signal);
             colors[i] = '#ffffff';
         }
@@ -147,6 +157,7 @@ export default class SortingVisualizer extends React.Component {
             signal: this.state.abortCtrl.signal,
 
             update: () => this.setState({array: p.array, stats: p.stats}),
+            playNote: this.playNote.bind(this),
             setColor: this.setColor.bind(this),
             resetColor: this.resetColor.bind(this),
             resetColors: this.resetColors.bind(this),
