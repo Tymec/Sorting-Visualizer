@@ -27,6 +27,7 @@ export const range = (value, min1, max1, min2, max2) => {
 }
 
 export const swap = (array, i, j) => {
+    if ( i === j ) return;
     let temp = array[i];
     array[i] = array[j];
     array[j] = temp;
